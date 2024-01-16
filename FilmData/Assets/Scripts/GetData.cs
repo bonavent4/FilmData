@@ -6,9 +6,6 @@ using TMPro;
 
 public class GetData : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI tempText;
-
-  //  public List<string[]> films = new List<string[]>();
     [SerializeField] string[] releaseDate;
     [SerializeField] string[] title;
     [SerializeField] string[] overview;
@@ -19,7 +16,22 @@ public class GetData : MonoBehaviour
     [SerializeField] string[] genre;
     [SerializeField] string[] PosterUrl;
 
+    [SerializeField] List<int> moviesToShow;
+    [SerializeField] TMP_InputField inputField;
+    [SerializeField]string[] diffenrentInfo;
+
     private void Awake()
+    {
+        GetFileData();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            placeMovies();
+        }
+    }
+    void GetFileData()
     {
         string fileData = File.ReadAllText(Application.streamingAssetsPath + "/movies.csv");
         string[] dataLines = fileData.Split('\n');
@@ -39,10 +51,10 @@ public class GetData : MonoBehaviour
             List<string> info = new List<string>();
             for (int d = 0; d < data.Length; d++)
             {
-                
-                if(data.Length > 1)
+
+                if (data.Length > 1)
                 {
-                    if(d == 1 || d == 3)
+                    if (d == 1 || d == 3)
                     {
                         info.Add(data[d]);
                     }
@@ -51,8 +63,8 @@ public class GetData : MonoBehaviour
                         string[] infoSplit = data[d].Split(',');
                         foreach (string s in infoSplit)
                         {
-                            if(s != "")
-                            info.Add(s);
+                            if (s != "")
+                                info.Add(s);
                         }
                     }
                 }
@@ -68,7 +80,6 @@ public class GetData : MonoBehaviour
             }
             for (int k = 0; k < info.Count; k++)
             {
-                // print(info[k]);
                 if (k == 0)
                     releaseDate[i] = info[k];
                 if (k == 1)
@@ -90,4 +101,44 @@ public class GetData : MonoBehaviour
             }
         }
     }
+
+    void CheckTroughMovise()
+    {
+
+    }
+    void placeMovies()
+    {
+        bool haveSortedOnce = false;
+        moviesToShow = new List<int>();
+        string text = inputField.text;
+        string[] splitText = text.Split(' ');
+
+        foreach (string s in splitText)
+        {
+            string[] splitSplitText = s.Split(':');
+            int index;
+            for (int i = 0; i < diffenrentInfo.Length; i++)
+            {
+                if (splitSplitText[0].Contains(diffenrentInfo[i]))
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (haveSortedOnce)
+            {
+                for (int i = 0; i < moviesToShow.Count; i++)
+                {
+                    
+                }
+            }
+            else
+            {
+
+                haveSortedOnce = true;
+            }
+        }
+        
+    }
+    //brug .contains("")
 }
